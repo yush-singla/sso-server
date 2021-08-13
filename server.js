@@ -21,7 +21,7 @@ async function getCustomTokenForUser(userCredentials) {
 
 async function generateCustomTokenFromMsToken(msToken) {
   const msDetails = jwtDecode(msToken);
-  const email = msToken.upn !== "" ? msToken.upn : msToken.unique_name;
+  const email = msToken.upn ? msToken.upn : msToken.unique_name;
   try {
     const userCredentials = await admin.auth().getUserByEmail(email);
     const customToken = await getCustomTokenForUser(userCredentials.uid);
