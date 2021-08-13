@@ -21,8 +21,9 @@ async function getCustomTokenForUser(userCredentials) {
 
 async function generateCustomTokenFromMsToken(msToken) {
   const msDetails = jwtDecode(msToken);
+  const email = msToken.upn !== "" ? msToken.upn : msToken.unique_name;
   try {
-    const userCredentials = await admin.auth().getUserByEmail(msDetails.upn);
+    const userCredentials = await admin.auth().getUserByEmail(email);
     const customToken = await getCustomTokenForUser(userCredentials.uid);
     return customToken;
   } catch (err) {
@@ -30,7 +31,7 @@ async function generateCustomTokenFromMsToken(msToken) {
     try {
       const userCredentials = await admin.auth().createUser({
         displayName: msDetails.name,
-        email: msDetails.upn,
+        email: email,
       });
       const customToken = await getCustomTokenForUser(userCredentials.uid);
       return customToken;
