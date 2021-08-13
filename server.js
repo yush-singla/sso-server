@@ -4,6 +4,7 @@ const cors = require("cors");
 const jwtDecode = require("jwt-decode");
 const admin = require("firebase-admin");
 const serviceAccount = require("./sso_config.json");
+const PORT = process.env.PORT || 5000;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -57,6 +58,6 @@ app.get("/", (rew, res) => {
   res.send("working fine completley");
 });
 
-app.listen(5000, () => {
-  console.log("server start on port 5000");
+app.listen(PORT, () => {
+  console.log(`server started on ${PORT}`);
 });
